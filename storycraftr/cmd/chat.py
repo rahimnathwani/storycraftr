@@ -44,7 +44,7 @@ def chat(book_path=None):
 
     # Create or get the assistant and thread
     assistant = create_or_get_assistant(book_path)
-    thread = get_thread()
+    thread = get_thread(book_path)
 
     session = PromptSession(history=InMemoryHistory())
 

@@ -36,7 +36,7 @@ def generate_chapter(book_path: str, chapter_number: int, prompt: str) -> str:
     console.print(f"[bold blue]Generating chapter {chapter_number}...[/bold blue]")
 
     assistant = create_or_get_assistant(book_path)
-    thread = get_thread()
+    thread = get_thread(book_path)
 
     chapter_file = f"chapter-{chapter_number}.md"
     file_path = Path(book_path) / "chapters" / chapter_file
@@ -95,7 +95,7 @@ def generate_cover(book_path: str, prompt: str) -> str:
 
     config = load_book_config(book_path)
     assistant = create_or_get_assistant(book_path)
-    thread = get_thread()
+    thread = get_thread(book_path)
 
     prompt_content = COVER_PROMPT.format(
         title=config.book_name,
@@ -132,7 +132,7 @@ def generate_back_cover(book_path: str, prompt: str) -> str:
 
     config = load_book_config(book_path)
     assistant = create_or_get_assistant(book_path)
-    thread = get_thread()
+    thread = get_thread(book_path)
 
     prompt_content = BACK_COVER_PROMPT.format(
         title=config.book_name,
@@ -171,7 +171,7 @@ def generate_epilogue(book_path: str, prompt: str) -> str:
     console.print("[bold blue]Generating epilogue...[/bold blue]")
 
     assistant = create_or_get_assistant(book_path)
-    thread = get_thread()
+    thread = get_thread(book_path)
 
     file_path = Path(book_path) / "chapters" / "epilogue.md"
 

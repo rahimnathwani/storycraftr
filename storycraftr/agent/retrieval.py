@@ -5,7 +5,7 @@ from rich.progress import Progress
 console = Console()
 
 
-def summarize_content(assistant, original_prompt: str) -> str:
+def summarize_content(assistant, original_prompt: str, book_path: str) -> str:
     """
     Summarizes the original prompt to reduce its size and complexity.
 
@@ -16,7 +16,7 @@ def summarize_content(assistant, original_prompt: str) -> str:
     Returns:
         str: The summarized content, or an empty string if summarization fails.
     """
-    thread = get_thread()
+    thread = get_thread(book_path)
     content = f"Summarize the following prompt to make it more concise:\n\nPrompt:\n{original_prompt}"
 
     console.print("[cyan]Summarizing the prompt...[/cyan]")
@@ -34,7 +34,7 @@ def summarize_content(assistant, original_prompt: str) -> str:
         return ""
 
 
-def optimize_query_with_summary(assistant, summarized_prompt: str) -> str:
+def optimize_query_with_summary(assistant, summarized_prompt: str, book_path: str) -> str:
     """
     Optimizes the summarized prompt for the best response.
 
@@ -45,7 +45,7 @@ def optimize_query_with_summary(assistant, summarized_prompt: str) -> str:
     Returns:
         str: The optimized content, or an empty string if optimization fails.
     """
-    thread = get_thread()
+    thread = get_thread(book_path)
     content = f"Using the following summarized prompt, optimize it for the best result:\n\nSummarized Prompt: {summarized_prompt}"
 
     console.print("[cyan]Optimizing the summarized prompt...[/cyan]")
@@ -63,7 +63,7 @@ def optimize_query_with_summary(assistant, summarized_prompt: str) -> str:
         return ""
 
 
-def final_query(assistant, optimized_prompt: str) -> str:
+def final_query(assistant, optimized_prompt: str, book_path: str) -> str:
     """
     Executes the final query using the optimized prompt.
 
@@ -74,7 +74,7 @@ def final_query(assistant, optimized_prompt: str) -> str:
     Returns:
         str: The response to the final query, or an empty string if the query fails.
     """
-    thread = get_thread()
+    thread = get_thread(book_path)
     content = f"Answer the following query:\n\nQuery: {optimized_prompt}"
 
     console.print("[cyan]Executing the final query...[/cyan]")
@@ -99,6 +99,7 @@ def handle_failed_prompt(assistant, original_prompt: str) -> str:
     Args:
         assistant: The assistant object to handle the interaction.
         original_prompt (str): The original prompt that needs handling.
+        book_path (str): The path to the book directory.
 
     Returns:
         str: The final response to the processed prompt, or an empty string if the process fails.
@@ -110,19 +111,19 @@ def handle_failed_prompt(assistant, original_prompt: str) -> str:
         console.print(
             "[bold blue]Step 1: Summarizing the original prompt...[/bold blue]"
         )
-        summarized_prompt = summarize_content(assistant, original_prompt)
+        summarized_prompt = summarize_content(assistant, original_prompt, book_path)
         progress.update(task, advance=1)
 
         # Step 2: Optimize the summarized prompt
         console.print(
             "[bold blue]Step 2: Optimizing the summarized prompt...[/bold blue]"
         )
-        optimized_prompt = optimize_query_with_summary(assistant, summarized_prompt)
+        optimized_prompt = optimize_query_with_summary(assistant, summarized_prompt, book_path)
         progress.update(task, advance=1)
 
         # Step 3: Execute the final query
         console.print("[bold blue]Step 3: Executing the final query...[/bold blue]")
-        final_response = final_query(assistant, optimized_prompt)
+        final_response = final_query(assistant, optimized_prompt, book_path)
         progress.update(task, advance=1)
 
     return final_response
