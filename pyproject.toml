@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10"
-openai = ">=1.51.2"
+openai = ">=1.70.0"
 click = ">=8.1"
 markdown = ">=3.7"
 pandoc = ">=2.4"

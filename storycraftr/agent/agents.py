@@ -44,7 +44,7 @@ def get_vector_store_id_by_name(assistant_name: str, client) -> str:
     Returns:
         str: The ID of the vector store associated with the assistant's name, or None if not found.
     """
-    vector_stores = client.beta.vector_stores.list()
+    vector_stores = client.vector_stores.list()
 
     expected_name = f"{assistant_name} Docs"
     for vector_store in vector_stores.data:
@@ -83,7 +83,7 @@ def upload_markdown_files_to_vector_store(
         return
 
     file_streams = [open(file_path, "rb") for file_path in md_files]
-    file_batch = client.beta.vector_stores.file_batches.upload_and_poll(
+    file_batch = client.vector_stores.file_batches.upload_and_poll(
         vector_store_id=vector_store_id, files=file_streams
     )
 
@@ -195,7 +195,7 @@ def create_or_get_assistant(book_path: str):
             return assistant
 
     # Crear vector store para file_search
-    vector_store = client.beta.vector_stores.create(name=f"{name} Docs")
+    vector_store = client.vector_stores.create(name=f"{name} Docs")
     upload_markdown_files_to_vector_store(vector_store.id, book_path, client)
 
     # Si no existe, crear uno nuevo con las herramientas soportadas
